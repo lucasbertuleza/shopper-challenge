@@ -1,0 +1,42 @@
+{
+	"name": "ShopperChallenge Development",
+  "dockerComposeFile": "docker/compose.devcontainer.yaml",
+  "service": "devcontainer",
+  "workspaceFolder": "/home/node/rest-api",
+  "shutdownAction": "stopCompose",
+	"postAttachCommand": [".devcontainer/entrypoints/post-attach-command.sh"],
+
+  "features": {
+		"ghcr.io/cirolosapio/devcontainers-features/alpine-git:0": {},
+		"ghcr.io/cirolosapio/devcontainers-features/alpine-ohmyzsh:0": {
+			"plugins": "alias-tips autoupdate gh git git-auto-fetch git-commit npm starship zsh-autosuggestions zsh-interactive-cd zsh-navigation-tools zsh-syntax-highlighting"
+		},
+		"ghcr.io/cirolosapio/devcontainers-features/alpine-starship:0": {}
+	},
+
+  "customizations": {
+		"vscode": {
+			"extensions": [
+				"ashinzekene.nestjs",
+        "christian-kohler.npm-intellisense",
+				"christian-kohler.path-intellisense",
+				"dbaeumer.vscode-eslint",
+				"eamodio.gitlens",
+				"editorconfig.editorconfig",
+				"esbenp.prettier-vscode",
+				"formulahendry.auto-close-tag",
+				"formulahendry.auto-rename-tag"
+			],
+			"settings": {
+				"editor.defaultFormatter": "esbenp.prettier-vscode",
+				"javascript.suggest.paths": false,
+			  "material-icon-theme.activeIconPack": "nest",
+				"typescript.suggest.paths": false,
+				"workbench.colorTheme": "Omni",
+				"workbench.iconTheme": "material-icon-theme",
+				"workbench.list.smoothScrolling": true,
+				"workbench.productIconTheme": "material-product-icons"
+			}
+		}
+	}
+}

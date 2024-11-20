@@ -1,0 +1,34 @@
+services:
+  devcontainer:
+    build: .
+    image: devcontainer-shopper_challenge_api
+    container_name: devcontainer-shopper_challenge_api
+    command: ash -c "sleep infinity"
+    ports:
+      - 3000:3000
+    working_dir: /home/node/rest-api
+    volumes:
+      - ../..:/home/node/rest-api
+    environment:
+      NODE_ENV: development
+      USER: node
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: postgres
+    depends_on:
+      - database
+
+  database:
+    image: postgres:alpine
+    container_name: devcontainer-shopper_challenge_database
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: postgres
+    mem_limit: 512m
+
+volumes:
+  postgres_data:

@@ -1,0 +1,7 @@
+# https://starship.rs/config/
+
+[container]
+style = 'bold blue dimmed'
+
+[username]
+show_always = true
