@@ -12,9 +12,10 @@ services:
     environment:
       NODE_ENV: development
       USER: node
+      POSTGRES_HOST: database
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
-      POSTGRES_DB: postgres
+      POSTGRES_DB: shopper_challenge_development
     depends_on:
       - database
 
@@ -27,8 +28,20 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
-      POSTGRES_DB: postgres
+      POSTGRES_DB: shopper_challenge_development
     mem_limit: 512m
+
+  webdb:
+    image: webdb/app
+    container_name: devcontainer-shopper_challenge_webdb
+    restart: always
+    volumes:
+      - 'webdb_data:/usr/src/app/static/version'
+    ports:
+      - '22071:22071'
 
 volumes:
   postgres_data:
+    name: shopper_challenge_postgres_data
+  webdb_data:
+    name: shopper_challenge_webdb
