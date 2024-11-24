@@ -7,19 +7,20 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
+  Check,
 } from 'typeorm';
 
-export type Grade = 1 | 2 | 3 | 4 | 5;
 export const MAX_GRADE = 5;
 export const MIN_GRADE = 1;
 
 @Entity()
+@Check('grade in (1,2,3,4,5)')
 export class Rating {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: BigInteger;
 
-  @Column({ type: 'enum', enum: [1, 2, 3, 4, 5] })
-  grade: Grade;
+  @Column('smallint')
+  grade: number;
 
   @Column()
   comment: string;
@@ -30,7 +31,7 @@ export class Rating {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @ManyToOne(() => PartnerDriver, (partnerDriver) => partnerDriver.ratings)
+  @ManyToOne(() => PartnerDriver, (partnerDriver) => partnerDriver.ratings, { nullable: false })
   @JoinColumn({ name: 'partner_driver_id' })
   partnerDriver: PartnerDriver;
 }
