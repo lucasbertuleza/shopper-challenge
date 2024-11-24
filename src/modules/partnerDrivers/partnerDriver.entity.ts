@@ -1,3 +1,4 @@
+import { Rating } from '@modules/ratings/rating.entity';
 import {
   Entity,
   Column,
@@ -5,14 +6,13 @@ import {
   Generated,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
 export class PartnerDriver {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: BigInteger;
-
-  // @TODO: has_many avaliations
 
   @Column()
   @Generated('uuid')
@@ -38,4 +38,7 @@ export class PartnerDriver {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @OneToMany(() => Rating, (rating) => rating.partnerDriver, { cascade: true })
+  ratings: Rating[];
 }
