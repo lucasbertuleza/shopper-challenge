@@ -10,17 +10,17 @@ import {
   Check,
 } from 'typeorm';
 
-export const MAX_GRADE = 5;
-export const MIN_GRADE = 1;
+export const MAX_RATING = 5;
+export const MIN_RATING = 1;
 
 @Entity()
-@Check('grade in (1,2,3,4,5)')
-export class Rating {
+@Check('rating in (1,2,3,4,5)')
+export class Review {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: BigInteger;
+  id: number;
 
   @Column('smallint')
-  grade: number;
+  rating: number;
 
   @Column()
   comment: string;
@@ -31,7 +31,7 @@ export class Rating {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @ManyToOne(() => PartnerDriver, (partnerDriver) => partnerDriver.ratings, { nullable: false })
+  @ManyToOne(() => PartnerDriver, (partnerDriver) => partnerDriver.reviews, { nullable: false })
   @JoinColumn({ name: 'partner_driver_id' })
   partnerDriver: PartnerDriver;
 }

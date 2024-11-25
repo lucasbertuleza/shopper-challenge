@@ -21,7 +21,9 @@ export class DatabaseSeedService implements OnModuleInit {
 
     SeedData.partnerDrivers.forEach(async (partner) => {
       const newPartner = this.partnerDriversRepository.create(partner);
-      newPartner.ratings = partner.ratings;
+      newPartner.reviews = partner.reviews;
+      await this.partnerDriversRepository.save(newPartner);
+      newPartner.lastReviewId = newPartner.reviews.at(0)!.id;
       await this.partnerDriversRepository.save(newPartner);
     });
   }

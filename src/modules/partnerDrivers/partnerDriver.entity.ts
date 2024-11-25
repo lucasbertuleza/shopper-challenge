@@ -1,4 +1,4 @@
-import { Rating } from '@modules/ratings/rating.entity';
+import { Review } from '@modules/reviews/review.entity';
 import {
   Entity,
   Column,
@@ -12,7 +12,7 @@ import {
 @Entity()
 export class PartnerDriver {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: BigInteger;
+  id: number;
 
   @Column()
   @Generated('uuid')
@@ -25,7 +25,7 @@ export class PartnerDriver {
   description: string;
 
   @Column()
-  car: string;
+  vehicle: string;
 
   @Column('numeric', { name: 'price_rate' })
   priceRate: number;
@@ -39,6 +39,9 @@ export class PartnerDriver {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @OneToMany(() => Rating, (rating) => rating.partnerDriver, { cascade: true })
-  ratings: Rating[];
+  @OneToMany(() => Review, (review) => review.partnerDriver, { cascade: true })
+  reviews: Review[];
+
+  @Column('bigint', { name: 'last_review_id', nullable: true })
+  lastReviewId: number;
 }
