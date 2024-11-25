@@ -10,14 +10,13 @@ export class PartnerDriversService {
     private partnerDriversRepository: Repository<PartnerDriver>,
   ) {}
 
-  findAll(): Promise<PartnerDriver[]> {
-    return this.partnerDriversRepository.find();
-  }
-
-  findAvailablesFromMileage(mileage: number): Promise<PartnerDriver[]> {
-    return this.partnerDriversRepository.find({
-      where: { minimumMileage: LessThanOrEqual(mileage) },
-      order: { priceRate: 'ASC' },
-    });
+  findAvailablesFromDistance(distance: number): Promise<PartnerDriver[]> {
+    return this.partnerDriversRepository
+      .createQueryBuilder('driver')
+      .select(['driver.id AS id', 'name', 'description', 'vehicle', 'rating', 'comment'])
+      .innerJoin('driver.reviews', 'review', 'review.id = driver.last_review_id')
+      .where({ minimumMileage: LessThanOrEqual(distance) })
+      .orderBy('price_rate', 'ASC')
+      .getRawMany();
   }
 }

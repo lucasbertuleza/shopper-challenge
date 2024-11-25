@@ -5,7 +5,7 @@ import { PartnerDriversService } from './partnerDrivers.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PartnerDriver])],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, PartnerDriversService],
   providers: [PartnerDriversService],
 })
 export class PartnerDriversModule {}
