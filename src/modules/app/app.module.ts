@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PartnerDriversModule } from '@modules/partnerDrivers/partnerDrivers.module';
 import { DatabaseSeedService } from 'src/db/database.seed.service';
+import { RidesModule } from 'src/rides/rides.module';
 
 const PostgresConnection = TypeOrmModule.forRoot({
   type: 'postgres',
@@ -20,7 +21,7 @@ const PostgresConnection = TypeOrmModule.forRoot({
 });
 
 @Module({
-  imports: [PostgresConnection, PartnerDriversModule],
+  imports: [PostgresConnection, PartnerDriversModule, RidesModule],
   controllers: [AppController],
   providers: [AppService, DatabaseSeedService],
 })
