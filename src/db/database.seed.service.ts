@@ -1,4 +1,4 @@
-import { PartnerDriver } from '@modules/partnerDrivers/partnerDriver.entity';
+import { PartnerDriver } from '@modules/partner-drivers/partner-driver.entity';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

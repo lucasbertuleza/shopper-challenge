@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, LessThanOrEqual } from 'typeorm';
-import { PartnerDriver } from './partnerDriver.entity';
+import { PartnerDriver } from './partner-driver.entity';
 
 @Injectable()
 export class PartnerDriversService {

@@ -1,4 +1,4 @@
-import { PartnerDriver } from '@modules/partnerDrivers/partnerDriver.entity';
+import { PartnerDriver } from '@modules/partner-drivers/partner-driver.entity';
 
 export const SeedData = {
   partnerDrivers: [

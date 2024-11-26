@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PartnerDriversModule } from '@modules/partnerDrivers/partnerDrivers.module';
+import { PartnerDriversModule } from '@modules/partner-drivers/partnerDrivers.module';
 import { DatabaseSeedService } from 'src/db/database.seed.service';
 import { RidesModule } from 'src/rides/rides.module';
 
