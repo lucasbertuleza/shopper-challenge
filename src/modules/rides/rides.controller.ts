@@ -1,9 +1,17 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
 import { RidesService } from './rides.service';
 import { PartnerDriversService } from '@modules/partner-drivers/partner-drivers.service';
 import { RideEstimateDto } from './ride-estimate.dto';
 
 @Controller('ride')
+@UseInterceptors(ClassSerializerInterceptor)
 export class RidesController {
   constructor(
     private readonly ridesService: RidesService,
