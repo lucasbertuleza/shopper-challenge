@@ -13,10 +13,9 @@ export class PartnerDriversService {
   findAvailablesFromDistance(distance: number): Promise<PartnerDriver[]> {
     return this.partnerDriversRepository
       .createQueryBuilder('driver')
-      .select(['driver.id AS id', 'name', 'description', 'vehicle', 'rating', 'comment'])
-      .innerJoin('driver.reviews', 'review', 'review.id = driver.last_review_id')
+      .leftJoinAndSelect('driver.reviews', 'review', 'review.id = driver.last_review_id')
       .where({ minimumMileage: LessThanOrEqual(distance) })
       .orderBy('price_rate', 'ASC')
-      .getRawMany();
+      .getMany();
   }
 }
