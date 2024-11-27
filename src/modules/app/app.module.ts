@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PartnerDriversModule } from '@modules/partner-drivers/partnerDrivers.module';
+import { PartnerDriversModule } from '@modules/partner-drivers/partner-drivers.module';
 import { DatabaseSeedService } from 'src/db/database.seed.service';
-import { RidesModule } from 'src/rides/rides.module';
+import { RidesModule } from '@modules/rides/rides.module';
 
 const PostgresConnection = TypeOrmModule.forRoot({
   type: 'postgres',
