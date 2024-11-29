@@ -5,8 +5,9 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
+import { INVALID_DATA } from 'src/constants/codes';
 
-@ValidatorConstraint({ name: 'destination', async: false })
+@ValidatorConstraint({ name: INVALID_DATA, async: false })
 export class DestinationAndOriginEqualsConstraint implements ValidatorConstraintInterface {
   validate(destination: string, args?: ValidationArguments): boolean {
     const origin = (args?.object as any)['origin'] as string;
