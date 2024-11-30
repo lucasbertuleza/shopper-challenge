@@ -1,4 +1,5 @@
 import { Review } from '@modules/reviews/review.entity';
+import { Ride } from '@modules/rides/ride.entity';
 import { Exclude, Expose, Transform } from 'class-transformer';
 import {
   Entity,
@@ -49,6 +50,10 @@ export class PartnerDriver {
   @Exclude()
   @OneToMany(() => Review, (review) => review.partnerDriver, { cascade: true })
   reviews: Review[];
+
+  @Exclude()
+  @OneToMany(() => Ride, (ride) => ride.partnerDriver, { cascade: true })
+  rides: Ride[];
 
   @Exclude()
   @Column('bigint', { name: 'last_review_id', nullable: true })
