@@ -11,10 +11,10 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "@migrations": ["./src/db/migrations"],
+      "@constants": ["./src/constants"],
       "@migrations/*": ["./src/db/migrations/*"],
-      "@modules": ["./src/modules"],
       "@modules/*": ["./src/modules/*"],
+      "@utils": ["./src/utils"],
     },
     "incremental": true,
     "skipLibCheck": true,

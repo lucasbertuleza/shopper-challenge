@@ -3,10 +3,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { instanceToPlain } from 'class-transformer';
 import { GoogleMapsRouting, ILocation, IRouteResponse } from 'src/clients/google/routes-api';
-import { KM } from 'src/constants/numeric';
+import { KM } from '@constants';
 import { Ride } from './ride.entity';
 import { Repository } from 'typeorm';
 import { RideConfirmDto } from './ride-confirm.dto';
+import { Numeric } from '@utils';
 
 @Injectable()
 export class RidesService {
@@ -61,7 +62,7 @@ export class RidesService {
     return drivers.map((driver) => {
       const rideValue = driver.priceRate * (this.distance / KM);
       const driverDto = instanceToPlain(driver);
-      return { ...driverDto, value: rideValue };
+      return { ...driverDto, value: Numeric.toMoney(rideValue) };
     });
   }
 }

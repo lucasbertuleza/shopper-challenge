@@ -32,7 +32,7 @@ export class PartnerDriver {
   vehicle: string;
 
   @Exclude()
-  @Column('numeric', { name: 'price_rate' })
+  @Column('numeric', { name: 'price_rate', precision: 15, scale: 2 })
   priceRate: number;
 
   @Exclude()
