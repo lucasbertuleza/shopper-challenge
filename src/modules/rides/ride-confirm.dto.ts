@@ -38,4 +38,8 @@ export class RideConfirmDto extends RideEstimateDto {
   @IsValidDriver()
   @Type(() => DriverDto)
   driver: DriverDto;
+
+  get customerId() {
+    return this.customer_id;
+  }
 }

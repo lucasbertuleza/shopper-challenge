@@ -30,7 +30,8 @@ export class RidesController {
 
   @Patch('confirm')
   @HttpCode(200)
-  confirm(@Body() rideConfirmDto: RideConfirmDto) {
+  async confirm(@Body() rideConfirmDto: RideConfirmDto) {
+    await this.ridesService.confirm(rideConfirmDto);
     return { success: true };
   }
 }

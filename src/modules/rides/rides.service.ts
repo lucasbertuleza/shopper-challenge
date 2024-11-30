@@ -1,8 +1,12 @@
-import type { PartnerDriver } from '@modules/partner-drivers/partner-driver.entity';
+import { PartnerDriver } from '@modules/partner-drivers/partner-driver.entity';
 import { Inject, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { instanceToPlain } from 'class-transformer';
 import { GoogleMapsRouting, ILocation, IRouteResponse } from 'src/clients/google/routes-api';
 import { KM } from 'src/constants/numeric';
+import { Ride } from './ride.entity';
+import { Repository } from 'typeorm';
+import { RideConfirmDto } from './ride-confirm.dto';
 
 @Injectable()
 export class RidesService {
@@ -15,7 +19,19 @@ export class RidesService {
   constructor(
     @Inject(GoogleMapsRouting)
     private readonly googleMapsRouting: GoogleMapsRouting,
+
+    @InjectRepository(Ride)
+    private readonly ridesRepository: Repository<Ride>,
   ) {}
+
+  async confirm(confirmDto: RideConfirmDto) {
+    const newRide = this.ridesRepository.create(confirmDto);
+    const driver = new PartnerDriver();
+    driver.id = confirmDto.driver.id;
+    newRide.partnerDriver = driver;
+
+    await this.ridesRepository.save(newRide);
+  }
 
   getRideWith(availableDrivers: PartnerDriver[]) {
     return {
