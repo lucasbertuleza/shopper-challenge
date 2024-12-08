@@ -9,7 +9,7 @@ import { RideEstimateDto } from './ride-estimate.dto';
 import { Type } from 'class-transformer';
 import { IsValidDistance, IsValidDriver } from './ride-corfirm.constraints';
 
-class DriverDto {
+export class DriverDto {
   @IsNotEmpty()
   @IsPositive()
   id: number;
