@@ -1,9 +1,9 @@
 import { PartnerDriver } from '@modules/partner-drivers/partner-driver.entity';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { instanceToPlain } from 'class-transformer';
 import { GoogleMapsRouting, ILocation, IRouteResponse } from 'src/clients/google/routes-api';
-import { KM } from '@constants';
+import { KM, NO_RIDES_FOUND } from '@constants';
 import { Ride } from './ride.entity';
 import { Repository } from 'typeorm';
 import { RideConfirmDto } from './ride-confirm.dto';
@@ -25,10 +25,24 @@ export class RidesService {
     private readonly ridesRepository: Repository<Ride>,
   ) {}
 
+  async list(customerId: string, driverId?: number) {
+    const rides = await this.ridesRepository.find({
+      relations: { partnerDriver: true },
+      where: {
+        customerId,
+        partnerDriver: { id: driverId?.toString() },
+      },
+    });
+
+    if (!rides.length) this.throwRidesNotFound(customerId, driverId);
+
+    return { customer_id: customerId, rides };
+  }
+
   async confirm(confirmDto: RideConfirmDto) {
     const newRide = this.ridesRepository.create(confirmDto);
     const driver = new PartnerDriver();
-    driver.id = confirmDto.driver.id;
+    driver.id = confirmDto.driver.id.toString();
     newRide.partnerDriver = driver;
 
     await this.ridesRepository.save(newRide);
@@ -63,6 +77,13 @@ export class RidesService {
       const rideValue = driver.priceRate * (this.distance / KM);
       const driverDto = instanceToPlain(driver);
       return { ...driverDto, value: Numeric.toMoney(rideValue) };
+    });
+  }
+
+  private throwRidesNotFound(customer_id: string, driver_id?: number) {
+    throw new NotFoundException({
+      error_code: NO_RIDES_FOUND,
+      error_description: `customer_id=${customer_id};driver_id=${driver_id}`,
     });
   }
 }

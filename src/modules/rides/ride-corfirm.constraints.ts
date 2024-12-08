@@ -2,7 +2,9 @@ import { PartnerDriver } from '@modules/partner-drivers/partner-driver.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  isNumberString,
   registerDecorator,
+  validate,
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
@@ -10,7 +12,7 @@ import {
 } from 'class-validator';
 import { DRIVER_NOT_FOUND, INVALID_DISTANCE } from 'src/constants/codes';
 import { Repository } from 'typeorm';
-import { RideConfirmDto } from './ride-confirm.dto';
+import { DriverDto, RideConfirmDto } from './ride-confirm.dto';
 
 @Injectable()
 @ValidatorConstraint({ name: DRIVER_NOT_FOUND, async: true })
@@ -20,15 +22,22 @@ export class DriverNotFoundConstraint implements ValidatorConstraintInterface {
     private partnerDriversRepository: Repository<PartnerDriver>,
   ) {}
 
-  async validate(driver: { name: string; id: number }): Promise<boolean> {
+  async validate(driver: DriverDto | string): Promise<boolean> {
     // skip validation
-    if (!(driver && driver.id && driver.name)) return true;
+    if (!driver) return true;
+    if (typeof driver === 'string' && !isNumberString(driver)) return true;
+    if (typeof driver !== 'string' && (await validate(driver)).length) return true;
 
-    return this.partnerDriversRepository.existsBy({ id: driver.id, name: driver.name });
+    const query =
+      typeof driver === 'string' ? { id: driver } : { ...driver, id: driver.id.toString() };
+
+    return this.partnerDriversRepository.existsBy(query);
   }
 
   defaultMessage(args: ValidationArguments): string {
-    return `id=${args.value.id};name=${args.value.name}`;
+    return typeof args.value === 'string'
+      ? `id=${args.value}`
+      : `id=${args.value.id};name=${args.value.name}`;
   }
 }
 
@@ -43,10 +52,10 @@ export class InvalidDistanceConstraint implements ValidatorConstraintInterface {
   async validate(distance: number, args: ValidationArguments): Promise<boolean> {
     // skip validation
     const { driver } = args.object as RideConfirmDto;
-    if (!(driver && driver.id && driver.name) || !distance) return true;
-
+    const hasErrors = (await validate(driver)).length > 0;
+    if (hasErrors || !distance) return true;
     // skip validation
-    const query = { id: driver.id, name: driver.name };
+    const query = { ...driver, id: driver.id.toString() };
     const persistedDriver = await this.partnerDriversRepository.findOneBy(query);
     if (!persistedDriver) return true;
 

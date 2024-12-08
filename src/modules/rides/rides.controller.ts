@@ -6,11 +6,15 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   Patch,
+  Get,
+  Query,
+  Param,
 } from '@nestjs/common';
 import { RidesService } from './rides.service';
 import { PartnerDriversService } from '@modules/partner-drivers/partner-drivers.service';
 import { RideEstimateDto } from './ride-estimate.dto';
 import { RideConfirmDto } from './ride-confirm.dto';
+import { RideListDto } from './ride-list.dto';
 
 @Controller('ride')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -33,5 +37,10 @@ export class RidesController {
   async confirm(@Body() rideConfirmDto: RideConfirmDto) {
     await this.ridesService.confirm(rideConfirmDto);
     return { success: true };
+  }
+
+  @Get(':customer_id')
+  list(@Param('customer_id') customerId: string, @Query() query: RideListDto) {
+    return this.ridesService.list(customerId, query.driver_id);
   }
 }

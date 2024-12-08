@@ -15,7 +15,7 @@ import {
 export class PartnerDriver {
   @Transform(({ value }) => parseInt(value))
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+  id: string;
 
   @Exclude()
   @Column()
@@ -61,6 +61,7 @@ export class PartnerDriver {
 
   @Expose({ name: 'review' })
   get lastReview() {
+    if (!this.reviews) return;
     const { rating, comment } = this.reviews[0];
     return { rating, comment };
   }
