@@ -9,6 +9,7 @@ services:
     working_dir: /home/node/rest-api
     volumes:
       - ../..:/home/node/rest-api
+    env_file: ../../.env
     environment:
       NODE_ENV: development
       USER: node
@@ -36,7 +37,7 @@ services:
     container_name: devcontainer-shopper_challenge_webdb
     restart: always
     volumes:
-      - 'webdb_data:/usr/src/app/static/version'
+      - webdb_data:/usr/src/app/static/version
     ports:
       - '22071:22071'
 
